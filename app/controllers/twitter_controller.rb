@@ -1,5 +1,5 @@
 class TwitterController < ApplicationController
-  	
+
 
   def user_tweet
     require "rubygems"
@@ -9,25 +9,27 @@ class TwitterController < ApplicationController
       config.consumer_secret = 'j3fvUGNzEj93ehOO413qC0Lzxb4Q5L7zVgMgVjTk5OJVDCLnbq'
       config.access_token = '832489876792578048-fKD5Sdf1iocMP2TgJ38rFxmahuUTQRh'
       config.access_token_secret = 'RN9fXHShUBrHTHyq4imCOpEBBYQT43VbEos7iilYYihSQ'
-    end   
+    end
     # Initialize your Twitter client
     # client = Twitter::Client.new
 
   	response = []
     # Post a status update
-    
-    client.search("Muslim Ban", :lang => "en", :until => "2017-10-10").take(20).collect do |tweet|
+    @count = 0
+    # client.search("Muslim Ban", :lang => "en", :until => "2017-10-10").take(20).collect do |tweet|
+    client.search("Saubhagya Yojna", :lang => "en").collect do |tweet|
+      @count = @count+1
+      z = {}
+      z['id'] = tweet['id']
+      z['created_at'] = tweet['created_at']
+      z['text'] = tweet['text']
+      z['retweet_count'] = tweet['retweet_count']
+      z['favorite_count'] = tweet['favorite_count']
 
-      # z = {}
-      # z['id'] = tweet['id']
-      # z['created_at'] = tweet['created_at']
-      # z['text'] = tweet['text']
-      # z['retweet_count'] = tweet['retweet_count']
-      # z['favorite_count'] = tweet['favorite_count']
-  	   
-      # response << tweet  
-  		response << tweet  	
+      # response << tweet
+  		response << z
   	end
+    puts @count
   	render json: response
   end
 end
